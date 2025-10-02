@@ -1,0 +1,9 @@
+{% extends "blog/base.html" %}
+{% block content %}
+    <p>Dodawanie nowego wątku</p>
+    <form action="{% url 'blog:new_post' %}" method="POST">
+        {% csrf_token %}
+        {{ form.as_div }}
+        <button name="submit">Dodaj wątek</button>
+    </form>
+{% endblock content %}

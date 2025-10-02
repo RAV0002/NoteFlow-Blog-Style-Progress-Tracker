@@ -1,0 +1,15 @@
+{% extends "blog/base.html" %}
+{% block content %}
+    <p>To jest BLOG stworzony przez <b>RAV0002</b></p>
+    <p><a href="{% url 'blog:new_post' %}"><button type="button">Dodaj nowy wątek</button></a></p>
+    <p>Lista wątków:</p>
+    <ul>
+        {% for post in posts %}
+            <li>
+                <a href="{% url 'blog:post' post.id %}">{{post.text}}</a>
+            </li>
+        {% empty %}
+            <p>Nie ma jeszcze żadnego postu</p>
+        {% endfor %}
+    </ul>
+{% endblock content %}
