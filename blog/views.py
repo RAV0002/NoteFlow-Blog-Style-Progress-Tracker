@@ -13,6 +13,7 @@ def index(request):
     context = {'posts': posts}
     return render(request, 'blog/index.html', context)
 
+@login_required
 def post(request, post_id):
     """Strona z wpisami do wybranego postu"""
     post = Post.objects.get(id=post_id)
@@ -41,6 +42,7 @@ def new_post(request):
 def new_entry(request, post_id):
     """Strona dodawania wpisu do posta"""
     post = Post.objects.get(id=post_id)
+    check_topic_owner(post.owner, request.user)
     if request.method != 'POST':
         form = EntryForm()
     else:
