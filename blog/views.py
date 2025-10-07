@@ -39,10 +39,37 @@ def new_post(request):
     return render(request, 'blog/new_post.html', context)
 
 @login_required
+def edit_post(request, post_id):
+    """Strona edycji wpisu w poście"""
+    post = Post.objects.get(id=post_id)
+    check_content_owner(post.owner, request.user)
+
+    if request.method != 'POST':
+        form = PostForm(instance=post)
+    else:
+        form = PostForm(instance=post,data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('blog:post', post_id = post.id)
+    context = {'post':post,'form':form}
+    
+    return render(request, 'blog/edit_post.html', context)
+
+@login_required
+def delete_post(request, post_id):
+    """Usuwanie posta"""
+    post = Post.objects.get(id=post_id)
+    check_content_owner(post.owner, request.user)
+    # Only allow deletion via POST to avoid accidental deletes via GET
+    if request.method == 'POST':
+        post.delete()
+    return redirect('blog:index')
+
+@login_required
 def new_entry(request, post_id):
     """Strona dodawania wpisu do posta"""
     post = Post.objects.get(id=post_id)
-    check_topic_owner(post.owner, request.user)
+    check_content_owner(post.owner, request.user)
     if request.method != 'POST':
         form = EntryForm()
     else:
@@ -61,7 +88,7 @@ def edit_entry(request, entry_id):
     """Strona edycji wpisu w poście"""
     entry = Entry.objects.get(id=entry_id)
     post = entry.post
-    check_topic_owner(post.owner, request.user)
+    check_content_owner(post.owner, request.user)
 
     if request.method != 'POST':
         form = EntryForm(instance=entry)
@@ -74,7 +101,17 @@ def edit_entry(request, entry_id):
     
     return render(request, 'blog/edit_entry.html', context)
 
+@login_required
+def delete_entry(request, entry_id):
+    """Usuwanie wpisu"""
+    entry = Entry.objects.get(id=entry_id)
+    post = entry.post
+    check_content_owner(post.owner, request.user)
+    # Only allow deletion via POST to avoid accidental deletes via GET
+    if request.method == 'POST':
+        entry.delete()
+    return redirect('blog:post', post_id=post.id)
 
-def check_topic_owner(postOwner, user):
+def check_content_owner(postOwner, user):
     if postOwner != user:
         raise Http404
