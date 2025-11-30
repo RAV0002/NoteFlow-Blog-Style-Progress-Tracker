@@ -2,7 +2,7 @@
 {% load django_bootstrap5 %}
 
 {% block page_header %}
-    <h2>Edit entry</h2>
+    <h2 class="text-white">Edit entry</h2>
 {% endblock page_header %}
 {% block content %}
     <form action="{% url 'blog:edit_entry' entry.id%}" method="POST">

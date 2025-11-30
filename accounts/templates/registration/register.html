@@ -3,15 +3,16 @@
 {% load django_bootstrap5 %}
 
 {% block page_header %}
-    <h2>Create account</h2>
+    <h2 class="text-white">Create account</h2>
 {% endblock page_header %}
 {% block content %}
-
-    <form method="post" action="{% url 'accounts:register' %}">
-        {% csrf_token %}
-        {% bootstrap_form form %}
-        {% bootstrap_button button_type="submit" content="Register" %}
-        <div class="form-text">Already have an account? <a href="{% url 'accounts:login' %}">Log in</a></div>
-    </form>
+    <div class="mt-4 p-5 bg-light rounded">
+        <form method="post" action="{% url 'accounts:register' %}">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            {% bootstrap_button button_type="submit" content="Register" %}
+            <div class="form-text">Already have an account? <a href="{% url 'accounts:login' %}">Log in</a></div>
+        </form>
+    </div>
 
 {% endblock content %}
