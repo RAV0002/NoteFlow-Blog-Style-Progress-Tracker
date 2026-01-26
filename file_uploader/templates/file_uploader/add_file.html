@@ -1,0 +1,36 @@
+{% extends "blog/base.html" %}
+
+{% load django_bootstrap5 %}
+
+{% block page_header %}
+    <h2 class="text-white">Upload file</h2>
+{% endblock page_header %}
+{% block content %}
+    <div class="container mt-4 p-5 bg-secondary bg-opacity-10 text-white rounded border mx-auto">
+        <div class="row">
+            <div class="col mb-4 p-5 border mx-auto">
+                <form method = 'POST' class="col s12" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input class="form-control mb-3" type="text" name="name_of_package" placeholder="Name of your package">
+                    {{new_form.as_p}}
+                    <input class="mb-4 d-block mx-auto" type = "file" name = 'document'>
+                    <p class="text-center"><button type = "submit" class='btn btn-outline-light btn'>Send</button></p>
+                </form>
+            </div> 
+            <div class="col border mx-auto">
+                <ul>
+                    {% for record in files %}
+                    <li class="mt-2">
+                        <h5 >{{record.name}}</h5>
+                        <a class='btn btn-outline-success btn-sm' href="{{ record.file.url }}">Download</a>
+                            <form method="post" action="{% url 'file_uploader:delete_file' record.id %}" class="d-inline mt-2" onsubmit="return confirm('Delete this file?');">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                            </form>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

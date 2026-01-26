@@ -3,7 +3,7 @@
 <head>
     {% load static %}
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="shortcut icon" type="image/png" href="{% static 'images/favicon.png' %}" >
     <title>NoteFlow_by_RAV0002</title>
 
@@ -20,6 +20,9 @@
             <a class="navbar-brand" href="{% url 'blog:index' %}">
                 <img src="{% static 'images/logo2.png' %}" alt="NoteFlow" height="60px" object-fit:contain;>
                 <span class="visually-hidden">NoteFlow</span>
+            </a>
+            <a href="{% url 'file_uploader:add_file' %}">
+                <button class='btn btn-outline-light btn-sm'>Add file</button>
             </a>
             <!-- PRAWA STRONA -->
             <ul class="navbar-nav ms-auto mb-2 mb-md-0">
