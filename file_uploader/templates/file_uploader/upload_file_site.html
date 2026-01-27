@@ -1,0 +1,46 @@
+{% extends "blog/base.html" %}
+
+{% load django_bootstrap5 %}
+
+{% block page_header %}
+    <div class="mt-4 p-5 bg-secondary bg-opacity-10 text-white rounded border">
+    <h1 class="display-4">File Uploader</h1>
+    <p class="lead">Here you can store some files</p>
+</div>
+{% endblock page_header %}
+{% block content %}
+    <div class="container p-5 bg-secondary bg-opacity-10 text-white rounded border mx-auto">
+        <div class="row border bg-dark mx-auto rounded">
+            <div class="col mt-2 d-flex justify-content-center align-items-center border-right">
+                <form method = 'POST' class="col s12" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{new_form.as_p}}
+                    <input class="mb-4 d-block mx-auto" type = "file" name = 'document' multiple>
+                    <p class="text-center"><button type = "submit" class='btn btn-outline-light btn'>Send</button></p>
+                </form>
+            </div> 
+            <div class="col border mx-auto" style="max-height: 500px; overflow-y: auto;">
+                <ul>
+                    {% for record in files %}
+                    <li class="mt-2" style="list-style-type: none;">
+                        <h5 >{{record.name}}</h5>
+                        <a class='btn btn-outline-success btn-sm' href="{{ record.file.url }}" download="{{ record.name }}">Download</a>
+                            <form method="post" action="{% url 'file_uploader:delete_file' record.id %}" class="d-inline mt-2" onsubmit="return confirm('Delete this file?');">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                            </form>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="row text-center mt-3">
+            {% if files %}
+            <form method="post" action="{% url 'file_uploader:delete_all_files' %}" class="d-inline mt-2" onsubmit="return confirm('Delete all files?');">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-danger">Delete all files</button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+{% endblock content %}

@@ -7,20 +7,19 @@ from .models import UploadedFile
 
 # Create your views here.
 @login_required
-def add_file(request):
+def upload_file_view(request):
 
     if request.method == "POST":
-        custom_name = request.POST.get('name_of_package')
-        request_file = request.FILES.get('document')
-        if request_file:
-            new_file = UploadedFile.objects.create(
-                name=custom_name,
-                file=request_file
+        requested_files = request.FILES.getlist('document')
+        for f in requested_files:
+            UploadedFile.objects.create(
+                name= f.name,
+                file=f
             )
-            return redirect('file_uploader:add_file')
-    uploaded_files = UploadedFile.objects.all()
+        return redirect('file_uploader:upload_file_view')
+    uploaded_files = UploadedFile.objects.order_by('-date_added')
     context = {'files':uploaded_files}
-    return render(request, 'file_uploader/add_file.html', context)
+    return render(request, 'file_uploader/upload_file_site.html', context)
 
 @login_required
 def delete_file(request, file_id):
@@ -30,4 +29,14 @@ def delete_file(request, file_id):
             file_record.file.delete()
         file_record.delete()
         
-    return redirect('file_uploader:add_file')
+    return redirect('file_uploader:upload_file_view')
+
+@login_required
+def delete_all_files(request):
+    if request.method == 'POST':
+        uploaded_files = UploadedFile.objects.all()
+        for f in uploaded_files:
+            if f.file:
+                f.file.delete()
+            f.delete()
+    return redirect('file_uploader:upload_file_view')
