@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'blog',
     'file_uploader',
     'accounts',
+    'yt_converter',
 
     #Other apps
     'django_bootstrap5',

@@ -15,6 +15,7 @@ build/
 *.pyc
 db.sqlite3
 media/
+converted_music/
 staticfiles/
 *.mo
 
@@ -35,3 +36,4 @@ Thumbs.db
 # OTHERS
 *.bat
 *.lnk
+ffmpeg/

@@ -24,6 +24,7 @@ urlpatterns = [
     path('', include('blog.urls')),
     path('accounts/', include('accounts.urls')),
     path('file_uploader/', include('file_uploader.urls')),
+    path('yt_converter/', include('yt_converter.urls')),
 ]
 
 if settings.DEBUG:
